@@ -73,8 +73,9 @@ public class RandPassGen {
 			}
 		}
 		for (int i = 0; i < characters; i++) {
-			// append random characters to password
+			password = password + passoptions.get((int)(Math.random() * passoptions.size()));
 		}
+		System.out.println("Password: " + password);
 		return password;
 	}
 
