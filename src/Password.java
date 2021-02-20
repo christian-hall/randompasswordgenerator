@@ -44,6 +44,4 @@ public class Password {
 	public String toString() {
 		return "Password [id=" + id + ", password=" + password + ", timestamp=" + timestamp + "]";
 	}
-	
-
 }

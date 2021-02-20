@@ -31,10 +31,18 @@ public class RandPassGen {
 					String special = Console.getString("Will there be special characters in this password? (y/n): ",
 							"y", "n");
 					String password = getPassword(characters, numbers, lowercase, uppercase, special);
+					System.out.println("\nPassword: " + password + "\n");
+
 				} else if (menu.equalsIgnoreCase("l")) {
 					// retrieve passwords from SQL
 				} else if (menu.equalsIgnoreCase("a")) {
-					// list information about this application
+					System.out.println("------------ About ------------");
+					System.out.println("Created using STS and MySQL Wor");
+					System.out.println("kbench just to connect STS and ");
+					System.out.println("SQL for a full stack app down  ");
+					System.out.println("the road. Thanks for checking  ");
+					System.out.println("it out.");
+					System.out.println();
 				} else if (menu.equalsIgnoreCase("q")) {
 					break;
 				} else {
@@ -83,8 +91,6 @@ public class RandPassGen {
 		for (int i = 0; i < characters; i++) {
 			password = password + passoptions.get((int) (Math.random() * passoptions.size()));
 		}
-		System.out.println("\nPassword: " + password + "\n");
-
 		return password;
 	}
 
