@@ -9,23 +9,27 @@ public class RandPassGen {
 		System.out.println("BY CHRISTIAN HALL -------------------- v. 1.0");
 		System.out.println();
 		String quit = "n";
-		while(quit.equalsIgnoreCase("n")) {
+		while (quit.equalsIgnoreCase("n")) {
 			String menu = "-";
 			while (!menu.equalsIgnoreCase("q")) {
 				System.out.println("---------- Main Menu ----------");
 				System.out.println("N - New Random Password");
-				System.out.println("L - List Passwords");
+				System.out.println("L - List Previous Passwords");
 				System.out.println("A - About App");
 				System.out.println("Q - Quit");
 				menu = Console.getString("type choice, then enter (n/l/a/q): ", true);
 				System.out.println();
-				if(menu.equalsIgnoreCase("n")) {
+				if (menu.equalsIgnoreCase("n")) {
 					// generate new password and add it to SQL
-					int characters = Console.getInt("How many characters in this password? ", 0, (int)Double.POSITIVE_INFINITY);
+					int characters = Console.getInt("How many characters in this password? ", 0,
+							(int) Double.POSITIVE_INFINITY);
 					String numbers = Console.getString("Will there be numbers in this password? (y/n): ", "y", "n");
-					String lowercase = Console.getString("Will there be lowercase letters in this password? (y/n): ", "y", "n");
-					String uppercase = Console.getString("Will there be uppercase letters in this password? (y/n): ", "y", "n");
-					String special = Console.getString("Will there be special characters in this password? (y/n): ", "y", "n");
+					String lowercase = Console.getString("Will there be lowercase letters in this password? (y/n): ",
+							"y", "n");
+					String uppercase = Console.getString("Will there be uppercase letters in this password? (y/n): ",
+							"y", "n");
+					String special = Console.getString("Will there be special characters in this password? (y/n): ",
+							"y", "n");
 					String password = getPassword(characters, numbers, lowercase, uppercase, special);
 				} else if (menu.equalsIgnoreCase("l")) {
 					// retrieve passwords from SQL
@@ -44,8 +48,9 @@ public class RandPassGen {
 		System.out.println("Goodbye");
 
 	}
-	
-	private static String getPassword(int characters, String numbers, String lowercase, String uppercase, String special) {
+
+	private static String getPassword(int characters, String numbers, String lowercase, String uppercase,
+			String special) {
 		String password = "";
 		List<String> passoptions = new ArrayList<>();
 		if (numbers.equalsIgnoreCase("y")) {
@@ -55,27 +60,31 @@ public class RandPassGen {
 			}
 		}
 		if (lowercase.equalsIgnoreCase("y")) {
-			List<String> passlowercs = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
-			for (int i =0; i < passlowercs.size(); i++) {
+			List<String> passlowercs = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+					"n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
+			for (int i = 0; i < passlowercs.size(); i++) {
 				passoptions.add(passlowercs.get(i));
 			}
 		}
 		if (uppercase.equalsIgnoreCase("y")) {
-			List<String> passuppercs = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
+			List<String> passuppercs = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+					"N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
 			for (int i = 0; i < passuppercs.size(); i++) {
 				passoptions.add(passuppercs.get(i));
 			}
 		}
 		if (special.equalsIgnoreCase("y")) {
-			List<String> passspecial = Arrays.asList("@", "%", "+", "\\", "/", "'", "!", "!", "#", "$", "^", "?", ":", ",", "(", ")", "{", "}", "[", "]", "~", "-", "_", ".");
+			List<String> passspecial = Arrays.asList("@", "%", "+", "\\", "/", "'", "!", "#", "$", "^", "?", ":", ",",
+					"(", ")", "{", "}", "[", "]", "~", "-", "_", ".");
 			for (int i = 0; i < passspecial.size(); i++) {
 				passoptions.add(passspecial.get(i));
 			}
 		}
 		for (int i = 0; i < characters; i++) {
-			password = password + passoptions.get((int)(Math.random() * passoptions.size()));
+			password = password + passoptions.get((int) (Math.random() * passoptions.size()));
 		}
-		System.out.println("Password: " + password);
+		System.out.println("\nPassword: " + password + "\n");
+
 		return password;
 	}
 
