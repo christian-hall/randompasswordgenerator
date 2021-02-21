@@ -5,7 +5,7 @@ USE PASSWORDMANAGER;
 CREATE table PASSWORDS (
 	id			int 		primary key  auto_increment,
     password	varchar(20) not null,
-    timestamp	datetime	not null
+    timestamp	datetime
 );
 
 DROP USER IF EXISTS rpg_user@localhost;

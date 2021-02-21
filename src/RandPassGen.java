@@ -1,10 +1,31 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class RandPassGen {
+	// DC Connection Variables
+	static Connection connection = null;
+	static String databaseName = "passwordmanager";
+	static String url = "jdbc:mysql://localhost:3306/" + databaseName;
+	static String username = "rpg_user";
+	static String password = "sesame";
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+		Class.forName("com.mysql.jdbc.Driver").newInstance();
+		connection = DriverManager.getConnection(url, username, password);
+		PreparedStatement insertPassword = connection.prepareStatement("INSERT INTO PASSWORDMANAGER.PASSWORDS (password) VALUES ('test2');");	
+		int status = insertPassword.executeUpdate();
+		if (status != 0) {
+			System.out.println("\n...database connected...\n");
+		} else {
+			System.out.println("\nDATABASE NOT CONNECTED!!\n");
+		}
+		
 		System.out.println("--------- RANDOM PASSWORD GENERATOR ---------");
 		System.out.println("BY CHRISTIAN HALL -------------------- v. 1.0");
 		System.out.println();
@@ -59,7 +80,7 @@ public class RandPassGen {
 
 	private static String getPassword(int characters, String numbers, String lowercase, String uppercase,
 			String special) {
-		String password = "";
+		String genpassword = "";
 		List<String> passoptions = new ArrayList<>();
 		if (numbers.equalsIgnoreCase("y")) {
 			List<String> passnumbers = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "0");
@@ -89,7 +110,7 @@ public class RandPassGen {
 			}
 		}
 		for (int i = 0; i < characters; i++) {
-			password = password + passoptions.get((int) (Math.random() * passoptions.size()));
+			genpassword = genpassword + passoptions.get((int) (Math.random() * passoptions.size()));
 		}
 		return password;
 	}
