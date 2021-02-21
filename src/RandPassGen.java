@@ -1,6 +1,7 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,15 +17,8 @@ public class RandPassGen {
 	static String password = "sesame";
 
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-		Class.forName("com.mysql.jdbc.Driver").newInstance();
+		Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 		connection = DriverManager.getConnection(url, username, password);
-		PreparedStatement insertPassword = connection.prepareStatement("INSERT INTO PASSWORDMANAGER.PASSWORDS (password) VALUES ('test2');");	
-		int status = insertPassword.executeUpdate();
-		if (status != 0) {
-			System.out.println("\n...database connected...\n");
-		} else {
-			System.out.println("\nDATABASE NOT CONNECTED!!\n");
-		}
 		
 		System.out.println("--------- RANDOM PASSWORD GENERATOR ---------");
 		System.out.println("BY CHRISTIAN HALL -------------------- v. 1.0");
@@ -42,8 +36,7 @@ public class RandPassGen {
 				System.out.println();
 				if (menu.equalsIgnoreCase("n")) {
 					// generate new password and add it to SQL
-					int characters = Console.getInt("How many characters in this password? ", 0,
-							(int) Double.POSITIVE_INFINITY);
+					int characters = Console.getInt("How many characters in this password? (1-20): ", 0, 21);
 					String numbers = Console.getString("Will there be numbers in this password? (y/n): ", "y", "n");
 					String lowercase = Console.getString("Will there be lowercase letters in this password? (y/n): ",
 							"y", "n");
@@ -51,11 +44,24 @@ public class RandPassGen {
 							"y", "n");
 					String special = Console.getString("Will there be special characters in this password? (y/n): ",
 							"y", "n");
-					String password = getPassword(characters, numbers, lowercase, uppercase, special);
-					System.out.println("\nPassword: " + password + "\n");
-
+					String genpassword = getPassword(characters, numbers, lowercase, uppercase, special);
+					System.out.println("\nPassword: " + genpassword);
+					
+					PreparedStatement insertPassword = connection.prepareStatement("INSERT INTO PASSWORDMANAGER.PASSWORDS (result) VALUES ('" + genpassword + "');");	
+					int status = insertPassword.executeUpdate();
+					if (status != 0) {
+						System.out.println("...successfully added to database\n");
+					} else {
+						System.out.println("ERROR: SQL not connected. Not added to database\n");
+					}
+					
 				} else if (menu.equalsIgnoreCase("l")) {
-					// retrieve passwords from SQL
+					System.out.println("-------- Past Passwords -------");
+					ResultSet oldPasswords = connection.createStatement().executeQuery("SELECT result FROM PASSWORDMANAGER.PASSWORDS;");
+					while (oldPasswords.next()) {
+						System.out.println(oldPasswords.getString("result"));
+					}
+					System.out.println("");
 				} else if (menu.equalsIgnoreCase("a")) {
 					System.out.println("------------ About ------------");
 					System.out.println("Created using STS and MySQL Wor");
@@ -75,7 +81,6 @@ public class RandPassGen {
 			System.out.println();
 		}
 		System.out.println("Goodbye");
-
 	}
 
 	private static String getPassword(int characters, String numbers, String lowercase, String uppercase,
@@ -112,7 +117,7 @@ public class RandPassGen {
 		for (int i = 0; i < characters; i++) {
 			genpassword = genpassword + passoptions.get((int) (Math.random() * passoptions.size()));
 		}
-		return password;
+		return genpassword;
 	}
 
 }
