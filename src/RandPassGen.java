@@ -68,7 +68,9 @@ public class RandPassGen {
 					System.out.println("kbench just to connect STS and ");
 					System.out.println("SQL for a full stack app down  ");
 					System.out.println("the road. Thanks for checking  ");
-					System.out.println("it out.");
+					System.out.println("it out, and feel free to use   ");
+					System.out.println("it for your own purpose, though");
+					System.out.println("it's not rally a useful app.   ");
 					System.out.println();
 				} else if (menu.equalsIgnoreCase("q")) {
 					break;
